@@ -1,2 +1,2 @@
 # haskell-lectures
-Lecture presentations for functional programming in Haskell
+Lecture presentations in spanish for functional programming in Haskell.
