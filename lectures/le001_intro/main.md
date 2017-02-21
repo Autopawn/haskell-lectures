@@ -8,7 +8,30 @@ highlight: tango
 colortheme: seagull
 ---
 
+# ¿Por qué Haskell?
+
 ## ¿Por qué Haskell?
+
+Haskell proveé:
+
+* Código de alto nivel **mantenible**.
+* Alto **desempeño**.
+* Código **cross-platform**.
+* Lenguaje **interpretado** o **compilado**.
+* Paralelización *"gratuita"*.
+* La mayoría de los **errores se detectan en tiempo de compilación**.
+* Buenas herramientas de profiling y debug.
+* Tiene **garbage collection**.
+
+Pero principalmente:
+
+* Haskell es un lenguaje que tiene varias características especiales y presenta un **enfoque diferente** ante los siguientes **problemas**...
+
+## El problema de la seguridad
+
+![The central challenge - *Simon Peython Jones*](media/side_effects.png)
+
+## El problema de la complejidad
 
 * Parte de **saber programar** es saber **manejar la complejidad**, más aun en el software moderno.
 
@@ -16,28 +39,36 @@ colortheme: seagull
 
 * Esto es determinar (e informar, o mejor aun, que sea obvio) el alcance de los **efectos** de nuetros componentes.
 
-* Esto se evidencia mucho al diseñar **programas paralelos**.
+* Esto se evidencia mucho al diseñar **programas paralelos** y código **reusable** y **mantenible**.
 
-* Haskell es un lenguaje que tiene varias características especiales y presenta un **enfoque diferente** ante estos problemas.
+## Plan A (todo el mundo)
 
-## ¿Por qué Haskell?
+* Los lenguajes convencionales parten de la idea de permitirle al programador hacer todo (*efectos arbitrarios*), por lo tanto son **útiles** pero **inseguros**.
 
-Haskell proveé:
+* La **inseguridad** implica también que se deben realizar esfuerzos por manejar la **complejidad**, porque un programador no puede asumir cosas sobre el comportamiento del código.
 
-* Código de alto nivel mantenible.
-* Alto desempeño.
-* Buenas herramientas de profiling.
-* Código **cross-platform**.
-* Paralelización *"gratuita"*.
+### El plan
 
-## El camino de Haskell
+* **Añadir restricciones**: *scope*, *modulos*, el *typesystem*, etc.
 
-![The central challenge - *Simon Peython Jones*](media/side_effects.png)
+* Se utilizan paradigmas y constructos del lenguaje, por ejemplo, **funciones**, **programación orientada a objetos** y **patrones de diseño**, pero su uso correcto siempre depende del programador.
 
-## El plan A (todo el mundo)
+## Plan B (Haskell)
 
+*Se necesita ver algunos conceptos primero...*
 
+## Haskell
 
+Haskell es un lenguaje:
+
+* **Puramente funcional**.
+* Tiene **tipificado fuerte**, pero **inferencia de tipo**.
+* Permite **programación genérica**.
+* Tiene **evaluación no estricta**.
+
+*Veamos qué significa cada una de estas cosa...*
+
+## Paradigmas
 ## Haskell
 
 * Haskell es un lenguaje de programación **puramente funcional**.
@@ -54,7 +85,7 @@ Haskell proveé:
 
 ### Pregunta
 
-*¿Qué ventajas y desventajas nos puede traer esto?*
+*¿Qué ventajas y desventajas tiene esto?*
 
 ## Transparencia referencial
 
@@ -80,6 +111,38 @@ Haskell proveé:
 * Trata la computación como la evaluación de **funciones matemáticas**.
 * Tiene sus orígenes en el **cálculo lambda**.
 
+### Ventajas de la programación funcional
+
++ Las funciones están completamente encapsuladas, por definición.
++ Asegura determinismo.
++ Simplifica programas paralelos.
+
+## Cálculo lambda
+
+...
+
+## Programación genérica
+
+* Las funciones programadas pueden funcionar para **más de un data type**.
+
+* En Haskell podemos definir una misma función que opere con cualquiér **data type**, o cualquier **data type** que cumplan ciertas condiciones (tenga cierto comportamiento definido).
+
+* Además, **las funciones son tipos de datos también** y son tratados como cualquier otro.
+
+## Plan B (Haskell)
+
+* Haskell se basa en modelo computacional del **cálculo lambda**, que inicialmente es restrictivo (*ausencia de efectos*), de hecho "*inútil*".
+
+* Para que sea útil, los **side effects**, cuando son necesarios, se manejan usando el *typesystem*.
+
+* El *typesystem* se encarga de que el código *puro* no se "contamine" con el *impuro* (**efectos controlados**).
+
+* La **programación funcional** facilita la **modularidad** y la **escalabilidad**.
+
+* La **reusabilidad** se logra mediante la **programación genérica**.
+
+# Programar con Haskell
+
 ## Programación funcional
 
 Para poder programar funcionalmente tenemos que tener en cuenta:
@@ -90,13 +153,17 @@ Para poder programar funcionalmente tenemos que tener en cuenta:
 
 * El único efecto que puede tener nuestras funciones está en el valor de **retorno**, y se puede escribir con una sola expresión (aunque podemos usar *alias*).
 
-* Generalmente reemplazaremso **iteración** con **recursión**.
+* Generalmente reemplazaremos **iteración** con **recursión**.
 
-## Ventajas de la programación funcional
+<!-- ## Programación funcional
 
-+ Las funciones están completamente encapsuladas, por definición.
-+ Asegura determinismo.
-+ Simplifica programas paralelos.
+Analógamente a la **POO**, podemos usar funciones matemáticas para:
+
+* Actualizar un objeto (más bien, obtener el como estará el objeto tras la actualización).
+
+* Obtener un *"atributo"* de un objeto.
+
+* -->
 
 ## Experiencia personal
 
@@ -104,13 +171,13 @@ Para poder programar funcionalmente tenemos que tener en cuenta:
 + Usualmente el código es compacto y puede resultar poco legible, pero es completamente **modular**.
 + El **tipificado fuerte** y **estático** de Haskell, junto con la programación funcional, atrapa la mayor parte de los errores en tiempo de compilación.
 + La ausencia de **side effects** permite un código más seguro.
-+ El **sistema de tipos** de Haskell permite realizar **generic programming**, siendo una herramienta muy poderosa.
++ El **sistema de tipos** de Haskell permite realizar **programación genérica**, siendo una herramienta muy poderosa.
 + Generalmente es posible optimizar Haskell a una velocidad comparable a la de C (depende mucho de la programación).
 + El lenguaje es rápido y cuenta con **garbage collection** automática.
 
 ## Experiencia personal
 
-- La **lazyness** complica conocer la complejidad real de los programas y la comunicación entre threads y es fuente de *sorpresas desagradables*, relacionadas con el uso de memoria. Esto se puede evitar con **evaluación estricta**.
+- La **laziness** complica conocer la complejidad real de los programas y la comunicación entre threads y es fuente de *sorpresas desagradables*, relacionadas con el uso de memoria. Esto se puede evitar con **evaluación estricta**.
 - El concepto de ``**monad**'', usado por muchas soluciones de Haskell, es difícil de entender, pero se puede evitar o usar superficialmente.
 - Aunque la comunidad es amigable, está más relacionada con la academia, las librerías son limitadas.
 
