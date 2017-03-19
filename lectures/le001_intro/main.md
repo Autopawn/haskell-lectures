@@ -1,9 +1,9 @@
 ---
 title: "Introducción a Haskell y la programación funcional"
 author: Francisco J. A. Casas B.
-date: 14 de marzo del 2017
+date: 21 de marzo del 2017
 output: beamer_presentation
-theme: Warsaw
+theme: CambridgeUS
 highlight: tango
 colortheme: seagull
 ---
@@ -29,7 +29,7 @@ Pero principalmente:
 
 ## El problema de la seguridad
 
-![The central challenge - *Simon Peython Jones*](media/side_effects.png)
+![The central challenge - *Simon Peyton Jones*](media/side_effects.png)
 
 ## El problema de la complejidad
 
@@ -62,23 +62,27 @@ Pero principalmente:
 Haskell es un lenguaje:
 
 * **Puramente funcional**.
-* Tiene **tipificado fuerte**, pero **inferencia de tipo**.
+* Tiene **tipificado fuerte estático**, pero **inferencia de tipo**.
 * Permite **programación genérica**.
 * Tiene **evaluación no estricta**.
+* Adicionalmente, usa **pattern matching**.
 
 *Veamos qué significa cada una de estas cosa...*
 
-## Paradigmas
-## Haskell
+# Programación puramente funcional
+
+## Programación puramente funcional
 
 * Haskell es un lenguaje de programación **puramente funcional**.
 
 * La **programación funcional** es un tipo de **programación declarativa**.
 
+* Hace amplio uso de la **recursión**.
+
 ## Programación declarativa
 
 * Suele corresponderse con la **lógica matemática**.
-* Uno NO le dice al computador **qué hacer** para obtener el resultado.
+* Uno **NO** le dice al computador **qué hacer** para obtener el resultado.
 * Uno indica **qué es** el resultado, tal como se hace con una definición matemática.
 * Las instrucciones se deducen a partir de las expresiones.
 * Carece de **side effects** (cambios de estado fuera de la **ejecución** de la función).
@@ -86,6 +90,26 @@ Haskell es un lenguaje:
 ### Pregunta
 
 *¿Qué ventajas y desventajas tiene esto?*
+
+## Ejemplos de recursión
+
+```haskell
+quicksort :: (Ord a) => [a] -> [a]  
+quicksort [] = []  
+quicksort (x:xs) =   
+    let smallerSorted = quicksort [a | a <- xs, a <= x]  
+        biggerSorted = quicksort [a | a <- xs, a > x]  
+    in  smallerSorted ++ [x] ++ biggerSorted
+
+
+maximum :: (Ord a) => [a] -> a
+maximum [] = error "maximum of empty list"
+maximum [x] = x
+maximum (x:xs)
+    | x > maxTail = x
+    | otherwise = maxTail
+    where maxTail = maximum' xs
+```
 
 ## Transparencia referencial
 
@@ -107,19 +131,37 @@ Haskell es un lenguaje:
 
 ## Programación funcional
 
-* Una vez se define algo, jamás cambia de estado (**data inmutable**).
+* Una vez se define algo, jamás cambia de estado (**data inmutable**). Es decír, las *variables* no pueden cambiar.
 * Trata la computación como la evaluación de **funciones matemáticas**.
 * Tiene sus orígenes en el **cálculo lambda**.
 
-### Ventajas de la programación funcional
+## Data inmutable
 
++ Implica que como usuarios de funciones, ninguna de ellas modificará nuestras *variables* sino que nos entregará una *nueva* (siempre hay **paso por valor**).
++ Implícitamente, almacenar un valor es lo mismo que almacenar una referencia a dicho valor (porque ese valor no va a cambiar).
++ No se utilizan *punteros*.
+
+### Pregunta
+
+* *Si siempre hay paso por valor, ¿Siempre hay que copiar toda la estructura de datos?*
+
+## Ventajas de la programación funcional
+
++ Las ventajas de la data inmutable.
 + Las funciones están completamente encapsuladas, por definición.
 + Asegura determinismo.
 + Simplifica programas paralelos.
 
-## Cálculo lambda
+# Tipificado fuerte estático
 
-...
+## Tipificado fuerte estático
+
++ **Tipificado estático** significa que el *type checking* ocurre en tiempo de compilación.
++ **Tipificado fuerte** significa que sólo podemos acceder a la data a través de su tipo (no, por ejemplo, a los bytes).
++ Las funciones están definidas para trabajar con ciertos tipos de datos y por lo tanto tienen un comportamiento **definido**.
++ Los errores relacionados con tipos de datos incorrectos se pueden detectar en **tiempo de compilación**.
+
+# Programación genérica
 
 ## Programación genérica
 
@@ -128,6 +170,96 @@ Haskell es un lenguaje:
 * En Haskell podemos definir una misma función que opere con cualquiér **data type**, o cualquier **data type** que cumplan ciertas condiciones (tenga cierto comportamiento definido).
 
 * Además, **las funciones son tipos de datos también** y son tratados como cualquier otro.
+
+* Es fácil crear **funciones de orden superior** (funciones que reciben funciones).
+
+## Ejemplo
+
+Pensemos en un **sort**:
+
+* En **C** (tipificado estático pero no fuerte) tenemos que usar punteros voids para lograr una función genérica:
+    ```
+    void qsort (void *ptr, size_t count, size_t size,
+    int (*comp)(const void *, const void *));
+    ```
+
+* En **python** podemos tener objetos de tipos diferentes en nuestra lista, pero fallará en *runtime* si el operador de comparación no está definido para las clases de esos objetos.
+    ```python
+    sorted(iterable, key=None, reverse=False)
+    ```
+
+## Ejemplo
+
+* **Haskell** aprovecha la programación genérica para tener un **sort** que funciona con cualquier tipo `a`, siempre que sea de la *clase* `Ord` (pues necesita que el operador de comparación esté definido para ese tipo), pero también podemos usar `sortBy` y usando nuestra propia función de comparación.
+    ```
+    sort :: Ord a => [a] -> [a]
+    sortBy :: (a -> a -> Ordering) -> [a] -> [a]
+    ```
+
+# Non-strictness
+
+## Non-strictness
+
+* Los valores sólo se computan cuando se necesitan, ahorra mucha síntaxis.
+
+* Se va juntando una serie de operaciones pendientes, un **thunk**.
+
+* Permite tener estucturas **infinitas**, y **definciones cíclicas**.
+
+* Puede mejorar implícitamente algoritmos, permitiendo ahorrar trabajo innecesario. Pero se requiere maestría.
+
+### Pregunta
+
+*¿Qué desventajas puede tener alguna desventaja la evaluación no estricta?*
+
+## Un ejemplo con (quick)sort
+
+Supongamos que `xs` es una lista con 500000 elementos.
+
+```haskell
+sum xs                  -- 0.16 ms
+sum (take 50 xs)        -- 0.00 ms
+sum (sort xs)           -- 2.32 ms
+sum (take 50 (sort xs)) -- 0.31 ms
+```
+
+Se puede ahorrar trabajo incluso en funciones que no conocemos.
+
+## Un ejemplo de estructuras de datos infinitas
+
+```haskell
+-- Lista infinita de naturales:
+nums = [1..]
+
+-- Lista infinita de números divisibles por 3:
+nums3 = [0,3..]
+nums3 = filter (\n -> mod n 3 == 0) [0..]
+
+-- Lista con los números de fibonacci:
+fibs = 0 : 1 : zipWith (+) fibs (tail fibs)
+```
+
+# Pattern matching
+
+## Pattern matching
+
+Una misma función se puede definir para inputs que calzan con diferentes **patrones**:
+
+```haskell
+take :: Int -> [a] -> [a]
+take 0 _  =  []
+take _ [] =  []
+take n (x:xs) =  x : take (n-1) xs
+
+subconjuntos :: [a] -> [[a]]
+subconjuntos [] = [[]]
+subconjuntos (x:xs) = [x:ys | ys <- sub] ++ sub
+    where sub = subconjuntos xs
+```
+
+También se puede aprovechar esto en **case expressions**.
+
+# Plan B (Haskell)
 
 ## Plan B (Haskell)
 
@@ -141,48 +273,22 @@ Haskell es un lenguaje:
 
 * La **reusabilidad** se logra mediante la **programación genérica**.
 
-# Programar con Haskell
+## Ejemplos
 
-## Programación funcional
+```haskell
+-- Función pura:
+raices :: (Floating t, Ord t) => t -> t -> t -> [t]
+raices a b c = let
+    d = b^2-4*a*c
+    e = sqrt d
+    in if d >= 0 then [(-b+e)/(2*a), (-b-e)/(2*a)]
+    else error "No tine raices reales"
 
-Para poder programar funcionalmente tenemos que tener en cuenta:
-
-* Nunca vamos a *modificar* algo, si necesitamos cambiar una sola celda en una matriz, usaremos una función que a partir de la matriz, nos entregará otra con el valor modificado.
-
-* Debemos pensar en las funciones como **tubos**, entra algo y sale algo diferente, no cambia el estado del tubo ni nada fuera de él.
-
-* El único efecto que puede tener nuestras funciones está en el valor de **retorno**, y se puede escribir con una sola expresión (aunque podemos usar *alias*).
-
-* Generalmente reemplazaremos **iteración** con **recursión**.
-
-<!-- ## Programación funcional
-
-Analógamente a la **POO**, podemos usar funciones matemáticas para:
-
-* Actualizar un objeto (más bien, obtener el como estará el objeto tras la actualización).
-
-* Obtener un *"atributo"* de un objeto.
-
-* -->
-
-## Experiencia personal
-
-+ El programador debe pensar más para resolver los problemas, pero las soluciones resultan **robustas**.
-+ Usualmente el código es compacto y puede resultar poco legible, pero es completamente **modular**.
-+ El **tipificado fuerte** y **estático** de Haskell, junto con la programación funcional, atrapa la mayor parte de los errores en tiempo de compilación.
-+ La ausencia de **side effects** permite un código más seguro.
-+ El **sistema de tipos** de Haskell permite realizar **programación genérica**, siendo una herramienta muy poderosa.
-+ Generalmente es posible optimizar Haskell a una velocidad comparable a la de C (depende mucho de la programación).
-+ El lenguaje es rápido y cuenta con **garbage collection** automática.
-
-## Experiencia personal
-
-- La **laziness** complica conocer la complejidad real de los programas y la comunicación entre threads y es fuente de *sorpresas desagradables*, relacionadas con el uso de memoria. Esto se puede evitar con **evaluación estricta**.
-- El concepto de ``**monad**'', usado por muchas soluciones de Haskell, es difícil de entender, pero se puede evitar o usar superficialmente.
-- Aunque la comunidad es amigable, está más relacionada con la academia, las librerías son limitadas.
-
-## Videos extra
-
-* [**Haskell is useless**](https://www.youtube.com/watch?v=iSmkqocn0oQ)
-
-* [Lambda Calculus - Computerphile](https://www.youtube.com/watch?v=eis11j_iGMs)
+-- Función impura:
+countLines :: FilePath -> IO Int
+countLines fname = do
+    contents <- readFile fname
+    putStr contents
+    let lins = lines contents
+    return (length lins)
+```
