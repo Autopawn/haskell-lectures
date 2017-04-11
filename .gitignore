@@ -1,3 +1,6 @@
+*.hi
+*.o
+*.exe
 *.pdf
 
 ## Core latex/pdflatex auxiliary files:
