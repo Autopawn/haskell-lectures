@@ -172,7 +172,7 @@ combis n li@(x:xs) =
 
 ## Tarea 1 1/2 : Mezcla de rangos
 
-Implemente la función:
+Cree un programa que implemente la función:
 
 ```haskell
 rangeMerge :: [(Int,Int)] -> [(Int,Int)]
@@ -182,7 +182,19 @@ Que recibe una lista de rangos $[a,b]$ y junta aquellos que se superponen hasta 
 
 ## Tarea 1 2/2 : Detector de ciclos
 
-Realizar un programa que se pueda compilar con `ghc`, que lea un archivo con los arcos de un grafo no dirigido:
+Cree un programa que implemente la función:
+
+```haskell
+hasCycles :: [(Int,Int)] -> Bool
+```
+
+Que reciba una lista de arcos en un grafo no dirigido y retorne `True` si tiene ciclos o `False` si no.
+
+Cualquier arco de un nodo a si mismo implica la presencia de un ciclo.
+
+## Tarea 1 meta : Implementación
+
+Ambos programas deben ser compilados con `ghc` y leer el input de un archivo `.txt` como el siguiente:
 
 ```
 (1,3)
@@ -192,13 +204,9 @@ Realizar un programa que se pueda compilar con `ghc`, que lea un archivo con los
 (3,4)
 ```
 
-Y imprima `1` si tiene ciclos o `0` si no tiene ciclos.
+e imprimir el resultado de la función correspondiente, llamada con ese input.
 
-Cualquier arco de un nodo a si mismo implica la presencia de un ciclo.
-
-**NOTA:** Aunque puede utilizar `Data.Set` para mayor eficiencia, no es necesario.
-
-## Tarea 1 2/2 : Recomendaciones
+## Tarea 1 meta : Implementación
 
 El archivo a leer debe ser especificado con el primer argumento de la línea de comandos.
 
@@ -218,3 +226,5 @@ Para parsear se recomienda usar
 ```haskell
 let arcs = map read <lineas> :: [(Int,Int)]
 ```
+
+<!-- Se creará un espacio en moodle para realizar la entrega, hasta el sábado a las 12pm, las notas estarán a más tardar el lunes en la mañana para que vean quienes se eximen del control. -->
