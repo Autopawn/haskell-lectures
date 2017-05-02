@@ -341,7 +341,7 @@ Clases que tienen límites definidos, tienen las "variables" `minBound` y `maxBo
 
 Números que pueden representar fracciones, tienen funciones como `/`.
 
-### Typeclases para tipos incompletos
+### Typeclasses para tipos incompletos
 
 Por ejemplo: **Functor**, **Foldable**, **Monoid** y **Monad**.
 
