@@ -10,3 +10,5 @@ le004:
 		cd le004_io; pandoc --latex-engine=pdflatex -t beamer main.md -o ../le004_io.pdf
 le005:
 	cd le005_tipos; pandoc --latex-engine=pdflatex -t beamer main.md -o ../le005_tipos.pdf
+le006:
+	cd le006_adicionales; pandoc --latex-engine=pdflatex -t beamer main.md -o ../le006_adicionales.pdf
