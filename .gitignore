@@ -2,6 +2,7 @@
 *.o
 *.exe
 *.pdf
+!ruben_astudillo_functor_y_monads.pdf
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
