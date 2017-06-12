@@ -14,3 +14,5 @@ le006:
 	cd le006_adicionales; pandoc --latex-engine=pdflatex -t beamer main.md -o ../le006_adicionales.pdf
 le007:
 	cd le007_monads; pandoc --latex-engine=pdflatex -t beamer main.md -o ../le007_monads.pdf
+tarea3:
+	pandoc --latex-engine=pdflatex -t beamer tarea3.md -o tarea3.pdf
