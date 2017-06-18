@@ -65,7 +65,7 @@ Documentación [AQUÍ](http://hackage.haskell.org/package/array-0.5.1.1/docs/Dat
 import Data.Array.IO
 main = do
   arr <- newArray (1,10) 37 :: IO (IOArray Int Int)
-  -- ^ Nuevo arreglo con índices de 0 a 10,
+  -- ^ Nuevo arreglo con índices de 1 a 10,
   -- todos inicializados en 37.
   a <- readArray arr 1
   -- ^ Leer posición 1.
