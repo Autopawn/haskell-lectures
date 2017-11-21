@@ -5,9 +5,9 @@ le001:
 le002:
 	cd le002_programando; pandoc --latex-engine=pdflatex -t beamer main.md -o ../le002_programando.pdf
 le003:
-		cd le003_ejercicios; pandoc --latex-engine=pdflatex -t beamer main.md -o ../le003_ejercicios.pdf
+	cd le003_ejercicios; pandoc --latex-engine=pdflatex -t beamer main.md -o ../le003_ejercicios.pdf
 le004:
-		cd le004_io; pandoc --latex-engine=pdflatex -t beamer main.md -o ../le004_io.pdf
+	cd le004_io; pandoc --latex-engine=pdflatex -t beamer main.md -o ../le004_io.pdf
 le005:
 	cd le005_tipos; pandoc --latex-engine=pdflatex -t beamer main.md -o ../le005_tipos.pdf
 le006:
